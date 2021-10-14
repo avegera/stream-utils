@@ -1,0 +1,129 @@
+= Laconic Stream Utils
+
+This is a library of laconic method-aliases for safety stream operations with collections in Java.
+
+== Introduction
+
+Java 8+ introduces Stream API & Optional classes, but sometimes the syntax is really verbose even for simple stream manipulations. This library introduces method-aliases for some popular operation with collections.
+
+For example, instead of the following code:
+
+[source,java]
+----
+if (users != null) {
+    return users.stream().map(User::getFirstName).collect(Collectors.toList());
+}
+return new ArrayList<>();
+----
+
+you can use short static method from the `StreamUtils` class:
+
+[source,java]
+----
+return map(users, User::getFirstName);
+----
+
+== Installation
+
+You can pull it from the Maven repository:
+
+[source,xml]
+----
+<dependency>
+    <groupId>com.github.avegera</groupId>
+    <artifactId>stream-utils</artifactId>
+    <version>1.0.0</version>
+</dependency>
+----
+
+== Utilities List
+
+The list of library classes:
+
+[plantuml, diagram-classes, png]
+....
+hide fields
+hide circle
+skinparam monochrome true
+skinparam defaultFontName JetBrains Mono
+
+class SafeStreamUtils {
+    * safeStream()
+    * safeStreamFunction()
+}
+
+class StreamUtils {
+* map()
+* mapToSet()
+* filter()
+* filterToSet()
+* flatMap()
+* flatMapToSet()
+* flatMapCollections()
+* flatMapCollectionsToSet()
+* distinct()
+* distinctToSet()
+* collectToList()
+* collectToSet()
+* sort()
+* sortToSet()
+* count()
+* findFirst()
+* findFirstOrDefault()
+* findAny()
+* findAnyOrDefault()
+* allMatch()
+* anyMatch()
+* noneMatch()
+}
+SafeStreamUtils --right--> StreamUtils : uses
+....
+
+=== SafeStreamUtils
+`SafeStreamUtils` contains NPE-safety methods for stream instantiating by provided input data. For example, the following method returns stream of users (or empty stream in case when `users == null`):
+
+[source,java]
+----
+Stream<User> stream = safeStream(users);
+----
+
+=== StreamUtils
+`StreamUtils` contains NPE-safety method-aliases for common Stream API intermediate operations like:
+
+* map()
+* filter()
+* flatMap()
+* distinct()
+* sort()
+
+By default, the result of all operations is a `List`. Use suffix `...ToSet()` in method name to return `Set` instead. For example, the following method returns list of groups:
+
+[source,java]
+----
+List<Group> groups = map(users, User::getGroup);
+----
+
+But this one returns set of groups:
+
+[source,java]
+----
+Set<Group> groups = mapToSet(users, User::getGroup);
+----
+
+Aliases for terminal operations also available:
+
+* collect(toList())
+* collect(toSet())
+* count()
+* findFirst()
+* findAny()
+* allMatch()
+* anyMatch()
+* noneMatch()
+
+For example, the following method returns first non-null user object:
+
+[source,java]
+----
+Optional<User> user = findFirst(users, Objects::nonNull);
+----
