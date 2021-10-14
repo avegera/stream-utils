@@ -11,13 +11,12 @@ import org.junit.jupiter.params.provider.ArgumentsSource;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static com.github.avegera.stream.utils.SafeStreamUtils.safeStream;
 import static com.github.avegera.stream.utils.test.StreamAssertions.assertEmptyStream;
 import static com.github.avegera.stream.utils.test.StreamAssertions.assertIterableEquals;
-import static java.util.stream.Collectors.toList;
+import static com.github.avegera.stream.utils.test.TestUtils.getCollection;
 import static org.junit.jupiter.params.provider.Arguments.of;
 
 @DisplayName("SafeStreamUtils Test")
@@ -61,12 +60,5 @@ class SafeStreamUtilsTest {
         public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
             return Stream.of(of(1), of(3), of(10), of(25), of(100));
         }
-    }
-
-    public static Collection<Object> getCollection(int size) {
-        return IntStream.range(1, size + 1)
-                .boxed()
-                .map((i) -> new Object())
-                .collect(toList());
     }
 }
