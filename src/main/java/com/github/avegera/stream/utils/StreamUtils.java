@@ -113,6 +113,12 @@ public class StreamUtils {
                 .orElse(defaultValue);
     }
 
+    public static <T> T findFirstOrNull(Collection<T> collection) {
+        return safeStream(collection)
+                .findFirst()
+                .orElse(null);
+    }
+
     public static <T> Optional<T> findAny(Collection<T> collection) {
         return safeStream(collection)
                 .findAny();
@@ -122,6 +128,12 @@ public class StreamUtils {
         return safeStream(collection)
                 .findAny()
                 .orElse(defaultValue);
+    }
+
+    public static <T> T findAnyOrNull(Collection<T> collection) {
+        return safeStream(collection)
+                .findAny()
+                .orElse(null);
     }
 
     public static <T> boolean allMatch(Collection<T> collection, Predicate<T> predicate) {

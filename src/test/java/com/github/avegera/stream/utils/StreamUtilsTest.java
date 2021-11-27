@@ -890,6 +890,55 @@ class StreamUtilsTest {
     }
 
     @Nested
+    @DisplayName("Find first or null")
+    class FindFirstOrNull {
+
+        @Nested
+        @DisplayName("returns null")
+        class ReturnsNull {
+
+            @Test
+            @DisplayName("for nullable collection")
+            void forNullableCollection() {
+                Object result = findFirstOrNull(null);
+                assertNull(result);
+            }
+
+            @Test
+            @DisplayName("for empty list")
+            void forEmptyList() {
+                Object result = findFirstOrNull(new ArrayList<>());
+                assertNull(result);
+            }
+
+            @Test
+            @DisplayName("for empty set")
+            void forEmptySet() {
+                Object result = findFirstOrNull(new HashSet<>());
+                assertNull(result);
+            }
+        }
+
+        @ParameterizedTest(name = "for size = {0}")
+        @ArgumentsSource(CollectionSizeProvider.class)
+        @DisplayName("returns first item from list")
+        void returnsFirstItemFromList(int size) {
+            List<Organization> list = getList(size, OrgUtils::getOrganization);
+            Organization result = findFirstOrNull(list);
+            assertEquals(list.iterator().next(), result);
+        }
+
+        @ParameterizedTest(name = "for size = {0}")
+        @ArgumentsSource(CollectionSizeProvider.class)
+        @DisplayName("returns first item from set")
+        void returnsFirstItemFromSet(int size) {
+            Set<Organization> set = getSet(size, OrgUtils::getOrganization);
+            Organization result = findFirstOrNull(set);
+            assertEquals(set.iterator().next(), result);
+        }
+    }
+
+    @Nested
     @DisplayName("Find any")
     class FindAny {
 
@@ -988,6 +1037,55 @@ class StreamUtilsTest {
         void returnsFirstItemFromSet(int size) {
             Set<Organization> set = getSet(size, OrgUtils::getOrganization);
             Organization result = findAnyOrDefault(set, null);
+            assertTrue(set.contains(result));
+        }
+    }
+
+    @Nested
+    @DisplayName("Find any or null")
+    class FindAnyOrNull {
+
+        @Nested
+        @DisplayName("returns null")
+        class ReturnsNull {
+
+            @Test
+            @DisplayName("for nullable collection")
+            void forNullableCollection() {
+                Object result = findAnyOrNull(null);
+                assertNull(result);
+            }
+
+            @Test
+            @DisplayName("for empty list")
+            void forEmptyList() {
+                Object result = findAnyOrNull(new ArrayList<>());
+                assertNull(result);
+            }
+
+            @Test
+            @DisplayName("for empty set")
+            void forEmptySet() {
+                Object result = findAnyOrNull(new HashSet<>());
+                assertNull(result);
+            }
+        }
+
+        @ParameterizedTest(name = "for size = {0}")
+        @ArgumentsSource(CollectionSizeProvider.class)
+        @DisplayName("returns any item from list")
+        void returnsFirstItemFromList(int size) {
+            List<Organization> list = getList(size, OrgUtils::getOrganization);
+            Organization result = findAnyOrNull(list);
+            assertTrue(list.contains(result));
+        }
+
+        @ParameterizedTest(name = "for size = {0}")
+        @ArgumentsSource(CollectionSizeProvider.class)
+        @DisplayName("returns any item from set")
+        void returnsFirstItemFromSet(int size) {
+            Set<Organization> set = getSet(size, OrgUtils::getOrganization);
+            Organization result = findAnyOrNull(set);
             assertTrue(set.contains(result));
         }
     }
