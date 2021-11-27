@@ -25,7 +25,9 @@ return map(users, User::getFirstName);
 
 == Installation
 
-You can pull it from the Maven repository:
+You can pull releases from the Maven Central repository (TBD).
+
+Use the following dependency in pom.xml for Maven:
 
 [source,xml]
 ----
@@ -36,6 +38,13 @@ You can pull it from the Maven repository:
 </dependency>
 ----
 
+Or add the following line to your build.gradle if you are using Gradle:
+
+[source,groovy]
+----
+implementation 'com.github.avegera:stream-utils:1.0.0'
+----
+
 == Utilities List
 
 The list of library classes:
@@ -43,7 +52,6 @@ The list of library classes:
 [plantuml, diagram-classes, png]
 ....
 hide fields
-hide circle
 skinparam monochrome true
 skinparam defaultFontName JetBrains Mono
 
@@ -70,13 +78,15 @@ class StreamUtils {
 * count()
 * findFirst()
 * findFirstOrDefault()
+* findFirstOrNull()
 * findAny()
 * findAnyOrDefault()
+* findAnyOrNull()
 * allMatch()
 * anyMatch()
 * noneMatch()
 }
-SafeStreamUtils --right--> StreamUtils : uses
+SafeStreamUtils <--right-- StreamUtils : uses
 ....
 
 === SafeStreamUtils
@@ -121,9 +131,9 @@ Aliases for terminal operations also available:
 * anyMatch()
 * noneMatch()
 
-For example, the following method returns first non-null user object:
+For example, the following method returns first user from list or null if no users inside:
 
 [source,java]
 ----
-Optional<User> user = findFirst(users, Objects::nonNull);
+User user = findFirstOrNull(users);
 ----
