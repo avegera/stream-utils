@@ -1,4 +1,4 @@
-package com.github.avegera.stream.utils;
+package io.github.avegera.stream.utils;
 
 import java.util.Collection;
 import java.util.function.Function;

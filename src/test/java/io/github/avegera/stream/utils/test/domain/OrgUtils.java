@@ -1,10 +1,10 @@
-package com.github.avegera.stream.utils.test.domain;
+package io.github.avegera.stream.utils.test.domain;
 
 import lombok.experimental.UtilityClass;
 
 import java.util.List;
 
-import static com.github.avegera.stream.utils.test.TestUtils.getList;
+import static io.github.avegera.stream.utils.test.TestUtils.getList;
 
 @UtilityClass
 public class OrgUtils {
