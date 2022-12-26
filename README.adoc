@@ -25,16 +25,16 @@ return map(users, User::getFirstName);
 
 == Installation
 
-You can pull releases from the Maven Central repository (TBD).
+You can pull releases from the Maven Central repository: TBD
 
 Use the following dependency in pom.xml for Maven:
 
 [source,xml]
 ----
 <dependency>
-    <groupId>com.github.avegera</groupId>
+    <groupId>io.github.avegera</groupId>
     <artifactId>stream-utils</artifactId>
-    <version>1.0.0</version>
+    <version>0.1.0</version>
 </dependency>
 ----
 
@@ -42,7 +42,7 @@ Or add the following line to your build.gradle if you are using Gradle:
 
 [source,groovy]
 ----
-implementation 'com.github.avegera:stream-utils:1.0.0'
+implementation 'io.github.avegera:stream-utils:0.1.0'
 ----
 
 == Utilities List
@@ -137,3 +137,7 @@ For example, the following method returns first user from list or null if no use
 ----
 User user = findFirstOrNull(users);
 ----
+
+== License
+
+This project is published under the Apache License 2.0, see http://www.apache.org/licenses/LICENSE-2.0 for details.

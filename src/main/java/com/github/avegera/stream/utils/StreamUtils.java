@@ -9,6 +9,9 @@ import static com.github.avegera.stream.utils.SafeStreamUtils.safeStream;
 import static com.github.avegera.stream.utils.SafeStreamUtils.safeStreamFunction;
 import static java.util.stream.Collectors.*;
 
+/**
+ * Stream utils class contains laconic method-aliases for safety stream operations with collections in Java.
+ */
 public class StreamUtils {
 
     private StreamUtils() {

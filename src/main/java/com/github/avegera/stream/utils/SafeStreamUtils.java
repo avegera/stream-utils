@@ -6,6 +6,9 @@ import java.util.stream.Stream;
 
 import static java.util.stream.Stream.empty;
 
+/**
+ * Safe stream utils class contains laconic method-aliases for safe stream initialization from java collections.
+ */
 public class SafeStreamUtils {
 
     private SafeStreamUtils() {
