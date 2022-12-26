@@ -1,4 +1,4 @@
-package com.github.avegera.stream.utils.test.domain;
+package io.github.avegera.stream.utils.test.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
