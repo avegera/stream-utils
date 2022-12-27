@@ -1,6 +1,6 @@
-package com.github.avegera.stream.utils.test;
+package io.github.avegera.stream.utils.test;
 
-import com.github.avegera.stream.utils.test.domain.Organization;
+import io.github.avegera.stream.utils.test.domain.Organization;
 import lombok.experimental.UtilityClass;
 
 import java.util.function.Predicate;

@@ -1,4 +1,4 @@
-package com.github.avegera.stream.utils.test;
+package io.github.avegera.stream.utils.test;
 
 import lombok.experimental.UtilityClass;
 import org.apache.commons.collections4.CollectionUtils;

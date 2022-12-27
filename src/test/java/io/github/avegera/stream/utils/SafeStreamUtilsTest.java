@@ -1,5 +1,7 @@
-package com.github.avegera.stream.utils;
+package io.github.avegera.stream.utils;
 
+import io.github.avegera.stream.utils.test.StreamAssertions;
+import io.github.avegera.stream.utils.test.TestUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -13,10 +15,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Stream;
 
-import static com.github.avegera.stream.utils.SafeStreamUtils.safeStream;
-import static com.github.avegera.stream.utils.test.StreamAssertions.assertEmptyStream;
-import static com.github.avegera.stream.utils.test.StreamAssertions.assertIterableEquals;
-import static com.github.avegera.stream.utils.test.TestUtils.getCollection;
+import static io.github.avegera.stream.utils.test.StreamAssertions.assertIterableEquals;
 import static org.junit.jupiter.params.provider.Arguments.of;
 
 @DisplayName("SafeStreamUtils Test")
@@ -33,15 +32,15 @@ class SafeStreamUtilsTest {
             @Test
             @DisplayName("for nullable collection")
             void forNullableCollection() {
-                Stream<?> stream = safeStream(null);
-                assertEmptyStream(stream);
+                Stream<?> stream = SafeStreamUtils.safeStream(null);
+                StreamAssertions.assertEmptyStream(stream);
             }
 
             @Test
             @DisplayName("for empty collection")
             void forEmptyCollection() {
-                Stream<Object> stream = safeStream(new ArrayList<>());
-                assertEmptyStream(stream);
+                Stream<Object> stream = SafeStreamUtils.safeStream(new ArrayList<>());
+                StreamAssertions.assertEmptyStream(stream);
             }
         }
 
@@ -49,8 +48,8 @@ class SafeStreamUtilsTest {
         @ArgumentsSource(CollectionSizeProvider.class)
         @DisplayName("equals collection of fixed size")
         void equalsCollectionOfFixedSize(int collectionSize) {
-            Collection<Object> collection = getCollection(collectionSize);
-            assertIterableEquals(collection, safeStream(collection));
+            Collection<Object> collection = TestUtils.getCollection(collectionSize);
+            StreamAssertions.assertIterableEquals(collection, SafeStreamUtils.safeStream(collection));
         }
     }
 
