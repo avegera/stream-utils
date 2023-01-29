@@ -16,7 +16,7 @@ if (users != null) {
 return new ArrayList<>();
 ----
 
-you can use short static method from the `StreamUtils` class:
+you can use short static method from the `Lists` class:
 
 [source,java]
 ----
@@ -25,10 +25,17 @@ return map(users, User::getFirstName);
 
 == Installation
 
-You can pull releases from the Maven Central repository: TBD
+Min Requirements: JDK 8+
 
-Use the following dependency in pom.xml for Maven:
+You can pull releases from the Maven Central repository:
+https://search.maven.org/artifact/io.github.avegera/stream-utils
 
+Use the following dependency for Maven/Gradle:
+
+[tabs]
+====
+Maven::
++
 [source,xml]
 ----
 <dependency>
@@ -38,12 +45,21 @@ Use the following dependency in pom.xml for Maven:
 </dependency>
 ----
 
-Or add the following line to your build.gradle if you are using Gradle:
-
+Gradle::
++
 [source,groovy]
 ----
 implementation 'io.github.avegera:stream-utils:0.1.0'
 ----
+====
+
+== Links
+
+* User Guide - TBD
+
+* https://www.javadoc.io/doc/io.github.avegera/stream-utils/latest/io/github/avegera/stream/utils/package-summary.html[JavaDoc]
+
+* https://github.com/avegera/stream-utils/wiki[Wiki Documentation]
 
 == Utilities List
 
@@ -90,7 +106,7 @@ SafeStreamUtils <--right-- StreamUtils : uses
 ....
 
 === SafeStreamUtils
-`SafeStreamUtils` contains NPE-safety methods for stream instantiating by provided input data. For example, the following method returns stream of users (or empty stream in case when `users == null`):
+`Streams` contains NPE-safety methods for stream instantiating by provided input data. For example, the following method returns stream of users (or empty stream in case when `users == null`):
 
 [source,java]
 ----
@@ -98,7 +114,7 @@ Stream<User> stream = safeStream(users);
 ----
 
 === StreamUtils
-`StreamUtils` contains NPE-safety method-aliases for common Stream API intermediate operations like:
+`Lists` contains NPE-safety method-aliases for common Stream API intermediate operations like:
 
 * map()
 * filter()
