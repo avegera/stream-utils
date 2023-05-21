@@ -20,27 +20,8 @@ public class Lists {
         //empty private constructor
     }
 
-    public static <T, R> List<R> map(Collection<T> collection, Function<T, R> mapper) {
+    public static <T> List<T> collect(Collection<T> collection) {
         return safeStream(collection)
-                .map(mapper)
-                .collect(toList());
-    }
-
-    public static <T> List<T> filter(Collection<T> collection, Predicate<T> predicate) {
-        return safeStream(collection)
-                .filter(predicate)
-                .collect(toList());
-    }
-
-    public static <T, R> List<R> flatMap(Collection<T> collection, Function<? super T, ? extends Stream<? extends R>> flatMapper) {
-        return safeStream(collection)
-                .flatMap(flatMapper)
-                .collect(toList());
-    }
-
-    public static <T, R> List<R> flatMapCollections(Collection<T> collection, Function<? super T, ? extends Collection<R>> flatMapper) {
-        return safeStream(collection)
-                .flatMap(e -> safeStream(flatMapper.apply(e)))
                 .collect(toList());
     }
 
@@ -50,8 +31,27 @@ public class Lists {
                 .collect(toList());
     }
 
-    public static <T> List<T> collect(Collection<T> collection) {
+    public static <T> List<T> filter(Collection<T> collection, Predicate<T> predicate) {
         return safeStream(collection)
+                .filter(predicate)
+                .collect(toList());
+    }
+
+    public static <T, R> List<R> flatMap(Collection<T> collection, Function<T, ? extends Stream<R>> flatMapper) {
+        return safeStream(collection)
+                .flatMap(flatMapper)
+                .collect(toList());
+    }
+
+    public static <T, R> List<R> flatMapCollections(Collection<T> collection, Function<T, ? extends Collection<R>> flatMapper) {
+        return safeStream(collection)
+                .flatMap(e -> safeStream(flatMapper.apply(e)))
+                .collect(toList());
+    }
+
+    public static <T, R> List<R> map(Collection<T> collection, Function<T, R> mapper) {
+        return safeStream(collection)
+                .map(mapper)
                 .collect(toList());
     }
 

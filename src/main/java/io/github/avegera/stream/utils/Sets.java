@@ -22,27 +22,8 @@ public class Sets {
         //empty private constructor
     }
 
-    public static <T, R> Set<R> mapToSet(Collection<T> collection, Function<T, R> mapper) {
+    public static <T> Set<T> collectToSet(Collection<T> collection) {
         return safeStream(collection)
-                .map(mapper)
-                .collect(toSet());
-    }
-
-    public static <T> Set<T> filterToSet(Collection<T> collection, Predicate<T> predicate) {
-        return safeStream(collection)
-                .filter(predicate)
-                .collect(toSet());
-    }
-
-    public static <T, R> Set<R> flatMapToSet(Collection<T> collection, Function<? super T, ? extends Stream<? extends R>> flatMapper) {
-        return safeStream(collection)
-                .flatMap(flatMapper)
-                .collect(toSet());
-    }
-
-    public static <T, R> Set<R> flatMapCollectionsToSet(Collection<T> collection, Function<? super T, ? extends Collection<R>> flatMapper) {
-        return safeStream(collection)
-                .flatMap(e -> safeStream(flatMapper.apply(e)))
                 .collect(toSet());
     }
 
@@ -52,8 +33,27 @@ public class Sets {
                 .collect(toSet());
     }
 
-    public static <T> Set<T> collectToSet(Collection<T> collection) {
+    public static <T> Set<T> filterToSet(Collection<T> collection, Predicate<T> predicate) {
         return safeStream(collection)
+                .filter(predicate)
+                .collect(toSet());
+    }
+
+    public static <T, R> Set<R> flatMapToSet(Collection<T> collection, Function<T, ? extends Stream<R>> flatMapper) {
+        return safeStream(collection)
+                .flatMap(flatMapper)
+                .collect(toSet());
+    }
+
+    public static <T, R> Set<R> flatMapCollectionsToSet(Collection<T> collection, Function<T, ? extends Collection<R>> flatMapper) {
+        return safeStream(collection)
+                .flatMap(e -> safeStream(flatMapper.apply(e)))
+                .collect(toSet());
+    }
+
+    public static <T, R> Set<R> mapToSet(Collection<T> collection, Function<T, R> mapper) {
+        return safeStream(collection)
+                .map(mapper)
                 .collect(toSet());
     }
 
