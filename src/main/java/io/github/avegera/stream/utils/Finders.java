@@ -14,23 +14,6 @@ public class Finders {
         //empty private constructor
     }
 
-    public static <T> Optional<T> findFirst(Collection<T> collection) {
-        return safeStream(collection)
-                .findFirst();
-    }
-
-    public static <T> T findFirstOrDefault(Collection<T> collection, T defaultValue) {
-        return safeStream(collection)
-                .findFirst()
-                .orElse(defaultValue);
-    }
-
-    public static <T> T findFirstOrNull(Collection<T> collection) {
-        return safeStream(collection)
-                .findFirst()
-                .orElse(null);
-    }
-
     public static <T> Optional<T> findAny(Collection<T> collection) {
         return safeStream(collection)
                 .findAny();
@@ -45,6 +28,23 @@ public class Finders {
     public static <T> T findAnyOrNull(Collection<T> collection) {
         return safeStream(collection)
                 .findAny()
+                .orElse(null);
+    }
+
+    public static <T> Optional<T> findFirst(Collection<T> collection) {
+        return safeStream(collection)
+                .findFirst();
+    }
+
+    public static <T> T findFirstOrDefault(Collection<T> collection, T defaultValue) {
+        return safeStream(collection)
+                .findFirst()
+                .orElse(defaultValue);
+    }
+
+    public static <T> T findFirstOrNull(Collection<T> collection) {
+        return safeStream(collection)
+                .findFirst()
                 .orElse(null);
     }
 }
