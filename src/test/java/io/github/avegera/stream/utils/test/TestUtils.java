@@ -1,5 +1,7 @@
 package io.github.avegera.stream.utils.test;
 
+import io.github.avegera.stream.utils.test.domain.User;
+
 import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -8,6 +10,7 @@ import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
+import static java.util.stream.IntStream.rangeClosed;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestUtils {
@@ -89,5 +92,13 @@ public class TestUtils {
                 .boxed()
                 .map((i) -> new Object())
                 .collect(toList());
+    }
+
+    public static List<Integer> getIntegers(int endInclusive) {
+        return rangeClosed(1, endInclusive).boxed().collect(toList());
+    }
+
+    public static List<User> getUsers(int endInclusive) {
+        return rangeClosed(1, endInclusive).boxed().map(it -> new User(it, null)).collect(toList());
     }
 }

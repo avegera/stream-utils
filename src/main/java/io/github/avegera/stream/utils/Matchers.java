@@ -6,7 +6,7 @@ import java.util.function.Predicate;
 import static io.github.avegera.stream.utils.Streams.safeStream;
 
 /**
- * The class contains laconic method-aliases for safety search operations in Java-collections.
+ * The class contains laconic method-aliases for safely performing search operations in Java-collections.
  * The result of the class methods execution is a boolean value.
  */
 public class Matchers {

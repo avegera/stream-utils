@@ -13,7 +13,7 @@ import static java.util.stream.Collectors.toCollection;
 import static java.util.stream.Collectors.toSet;
 
 /**
- * The class contains laconic method-aliases for safety stream operations with collections in Java.
+ * The class contains laconic method-aliases for safe stream operations with collections in Java.
  * The result of class methods operations is {@link java.util.Set}
  */
 public class Sets {
