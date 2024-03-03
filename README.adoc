@@ -6,7 +6,7 @@ This is a library of laconic method-aliases for safety stream operations with co
 
 Java 8+ introduces Stream API & Optional classes, but sometimes the syntax is really verbose even for simple stream manipulations. This library introduces method-aliases for some popular operation with collections.
 
-For example, instead of the following code:
+For example, instead of the following code that maps users to modifiable list:
 
 [source,java]
 ----
