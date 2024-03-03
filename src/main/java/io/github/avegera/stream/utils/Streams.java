@@ -16,6 +16,6 @@ public class Streams {
     }
 
     public static <T> Stream<T> safeStream(Collection<T> collection) {
-        return collection != null && collection.size() > 0 ? collection.stream() : empty();
+        return collection != null && !collection.isEmpty() ? collection.stream() : empty();
     }
 }

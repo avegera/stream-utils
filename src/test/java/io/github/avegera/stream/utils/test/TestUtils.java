@@ -98,6 +98,14 @@ public class TestUtils {
         return rangeClosed(1, endInclusive).boxed().collect(toList());
     }
 
+    public static List<String> getStrings(int endInclusive) {
+        return mapObjects(endInclusive, Objects::toString);
+    }
+
+    public static <T> List<T> mapObjects(int endInclusive, Function<Integer, T> mapper) {
+        return rangeClosed(1, endInclusive).boxed().map(mapper).collect(toList());
+    }
+
     public static List<User> getUsers(int endInclusive) {
         return rangeClosed(1, endInclusive).boxed().map(it -> new User(it, null)).collect(toList());
     }
