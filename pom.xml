@@ -18,6 +18,7 @@
 
         <!-- Test Dependencies -->
         <junit-jupiter.version>5.10.2</junit-jupiter.version>
+        <asserj.version>3.25.3</asserj.version>
         <commons-collections4.version>4.4</commons-collections4.version>
         <lombok.version>1.18.30</lombok.version>
 
@@ -70,6 +71,12 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>
             <version>${junit-jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${asserj.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
