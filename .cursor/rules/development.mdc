@@ -1,0 +1,152 @@
+---
+alwaysApply: true
+---
+
+# Development Rules for stream-utils project
+
+## Project Overview
+
+**stream-utils** is a Java library providing laconic method aliases (static java methods) for safe Stream API operations on Java collections. The project aims to simplify working with collections by avoiding verbose syntax of the standard Stream API.
+
+## Core Principles
+
+### 1. Class Structure (ADR-1 & ADR-2)
+- **Separate classes by result type**: Methods are grouped into classes based on their return type
+- **One class per result type**: Each class handles a specific return type (List, Set, Map, String, boolean, long, etc.)
+- **Stream operations**: Intermediate operations that return `Stream<T>` go into `Streams` class
+- **Clear decision algorithm**: For any new method, it should be obvious which class to place it in
+
+### 2. Class Naming (ADR-6)
+- **Semantic-based naming**: Class names reflect the semantic meaning of methods
+- **Plural form**: Use plural form of the result type or semantic meaning
+- **Short and readable**: Optimized for non-static imports
+
+**Class naming convention:**
+- `Streams` - for methods returning `Stream<T>`
+- `Lists` - for methods returning `List<T>`
+- `Sets` - for methods returning `Set<T>`
+- `Maps` - for methods returning `Map<K, V>`
+- `Strings` - for methods returning `String`
+- `Arrays` - for methods returning `T[]`
+- `Matchers` - for methods returning `boolean`
+- `Counters` - for methods returning `long`
+- `Finders` - for methods returning `T` or `Optional<T>`
+- `Iterators` - for methods returning `void`
+
+### 3. Method Naming (ADR-7)
+- **Short and meaningful**: Keep names concise but descriptive
+- **Follow Java Stream API**: Stay close to standard Java Stream API naming
+- **Omit defaults**: Don't include default behaviors in method names
+- **Suffix conventions**: Use appropriate suffixes for different result types
+
+**Naming rules:**
+- For `List<T>` results: No suffix needed (default behavior)
+- For `Set<T>` results: Use `ToSet` suffix (e.g., `mapToSet()`)
+- For `Map<K,V>` results: Use `ToMap` suffix
+- For `String` results: Use `ToString` suffix
+- For intermediate operations: Use operation name (e.g., `map()`, `filter()`)
+- For composite operations: Use `And` connector (e.g., `filterAndMapToSet()`)
+
+### 4. Null Safety (ADR-3)
+- **Safe by default**: All methods safely handle null collections
+- **Empty collection fallback**: Null collections are treated as empty collections
+- **No "safe" prefix**: Methods are safe by default, no need for "safe" in naming
+
+
+### 5. Immutability (ADR-4)
+- **Mutable by default**: Return mutable collections by default
+- **Explicit immutable methods**: Use specific suffixes for immutable collections
+- **Suffix conventions**: Use `ToImmutableList()`, `ToUnmodifiableList()`, etc. for immutable variants
+
+### 6. Code Reuse (ADR-8)
+- **Centralized stream creation**: All classes use `Streams.safeStream()` method
+- **Minimal cross-class dependencies**: Avoid complex interdependencies between utility classes
+- **Single responsibility**: Each class focuses on its specific result type
+
+## Implementation Guidelines
+
+### When Adding New Methods
+1. **Determine result type**: What does the method return?
+2. **Choose appropriate class**: Based on result type and semantic meaning (e.g. method returns `List<T>` then put it to `Lists.java`)
+3. **Follow naming conventions**: Use appropriate suffixes and naming patterns
+4. **Use safeStream()**: Always use `Streams.safeStream()` for null safety
+5. **Use static imports**: Instead `return Streams.safeStream(...)` use `return safeStream(...)` with static imports (for `toList()`, `toSet()`, etc)
+6. **Add comprehensive tests**: Cover null cases, empty collections, and normal cases
+
+### When Creating New Classes
+1. **Follow result type grouping**: Group by return type
+2. **Use semantic naming**: Choose meaningful class names
+3. **Implement private constructor**: Prevent instantiation
+4. **Add corresponding test class**: Follow test structure patterns
+
+### Code Structure Patterns
+```java
+public class ExampleClass {
+    private ExampleClass() {
+        // Private constructor to prevent instantiation
+    }
+    
+    public static <T> ResultType<T> methodName(Collection<T> collection, Function<T, R> mapper) {
+        return Streams.safeStream(collection)
+                .map(mapper)
+                .collect(collector);
+    }
+}
+```
+
+### Testing Requirements
+- **Null safety tests**: Test with null collections
+- **Empty collection tests**: Test with empty collections
+- **Parameterized tests**: Use JUnit 5 parameterized tests
+- **Coverage requirements**: Maintain 90%+ code coverage
+- **Test utilities**: Use existing test utilities from `test` package
+- **AssertJ assertions**: Use AssertJ for fluent assertions instead of JUnit assertions
+
+### Documentation Standards
+- **JavaDoc for classes**: Describe class purpose and usage
+- **JavaDoc for methods**: Document parameters, return values, and behavior
+- **Examples in README**: Provide usage examples in README.adoc
+- **ADR documentation**: Follow ADR process for architectural decisions
+
+## Project-Specific Conventions
+
+### Package Structure
+- `io.github.avegera.stream.utils` - Main utility classes, no sub-packages
+- `io.github.avegera.stream.utils.test` - Test utilities and domain objects for tests
+
+### Maven Configuration
+- **Java 8 compatibility**: Target Java 8
+- **JUnit 5**: For testing framework
+- **JaCoCo**: For code coverage (90% minimum)
+- **Apache License 2.0**: Project license
+
+### Error Handling
+- **NullPointerException**: For null functional parameters
+- **IllegalArgumentException**: For invalid input data
+- **Safe collection handling**: Never throw exceptions for null collections
+
+This project follows a functional, immutable, and null-safe approach to stream operations, providing concise method aliases that reduce boilerplate code while maintaining type safety and readability. 
+
+
+## Testing Conventions
+
+### Test Structure
+- Each utility class has corresponding test class
+- Uses JUnit 5 with parameterized tests
+- Tests cover null cases, empty collections, normal cases
+
+### Test Utilities
+- `TestUtils` - factories for creating test data
+- `CollectionSizeProvider` - size provider for parameterized tests
+- `StreamAssertions` - custom assertions for collections
+- `PredicateUtils` - ready predicates for tests
+
+### Domain Objects
+- `User`, `Organization`, `Address` - test domain objects
+- `OrgUtils` - utilities for creating test objects
+
+### AssertJ Usage
+- **Prefer AssertJ over JUnit assertions**: Use AssertJ's fluent API for better readability
+- **Collection assertions**: Use `assertThat(collection).isEmpty()`, `assertThat(collection).hasSize(n)`
+- **Exception testing**: Use `assertThatThrownBy(() -> method()).isInstanceOf(Exception.class)`
+- **Custom assertions**: Use existing `StreamAssertions` for collection-specific assertions
