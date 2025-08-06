@@ -14,7 +14,6 @@ import org.junit.jupiter.params.provider.ArgumentsSource;
 import java.util.*;
 
 import static io.github.avegera.stream.utils.Sets.*;
-import static io.github.avegera.stream.utils.Streams.safeStream;
 import static io.github.avegera.stream.utils.test.StreamAssertions.assertCollectionIsEmpty;
 import static io.github.avegera.stream.utils.test.StreamAssertions.assertIterableEquals;
 import static io.github.avegera.stream.utils.test.TestUtils.*;
@@ -22,13 +21,14 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Comparator.comparingInt;
 import static java.util.function.Function.identity;
+import static java.util.stream.Stream.empty;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class SetsTest {
 
     @Nested
-    @DisplayName("Collect collection to set")
+    @DisplayName("collectToSet(Collection<T>)")
     class CollectCollection {
 
         @Nested
@@ -70,7 +70,7 @@ class SetsTest {
     }
 
     @Nested
-    @DisplayName("Collect array to set")
+    @DisplayName("collectToSet(T[])")
     class CollectArray {
 
         @Nested
@@ -112,7 +112,7 @@ class SetsTest {
     }
 
     @Nested
-    @DisplayName("Distinct collection to set")
+    @DisplayName("distinctToSet(Collection<T>)")
     class DistinctCollection {
 
         @Nested
@@ -155,7 +155,7 @@ class SetsTest {
     }
 
     @Nested
-    @DisplayName("Distinct array to set")
+    @DisplayName("distinctToSet(T[])")
     class DistinctArray {
 
         @Nested
@@ -188,7 +188,7 @@ class SetsTest {
     }
 
     @Nested
-    @DisplayName("Filter collection to set")
+    @DisplayName("filterToSet(Collection<T>, Predicate<T>)")
     class FilterCollection {
 
         @Nested
@@ -242,7 +242,7 @@ class SetsTest {
     }
 
     @Nested
-    @DisplayName("Filter array to set")
+    @DisplayName("filterToSet(T[], Predicate<T>)")
     class FilterArray {
 
         @Nested
@@ -287,7 +287,7 @@ class SetsTest {
     }
 
     @Nested
-    @DisplayName("Map collection to set")
+    @DisplayName("mapToSet(Collection<T>, Function<T, R>)")
     class MapCollection {
 
         @Nested
@@ -348,7 +348,7 @@ class SetsTest {
     }
 
     @Nested
-    @DisplayName("Map array to set")
+    @DisplayName("mapToSet(T[], Function<T, R>)")
     class MapArray {
 
         @Nested
@@ -402,7 +402,7 @@ class SetsTest {
     }
 
     @Nested
-    @DisplayName("Flat map collection to set")
+    @DisplayName("flatMapToSet(Collection<T>, Function<T, Stream<R>>)")
     class FlatMapCollection {
 
         @Nested
@@ -424,21 +424,21 @@ class SetsTest {
             @Test
             @DisplayName("for nullable collection")
             void forNullableCollection() {
-                Set<Object> result = flatMapToSet((Collection<Object>) null, e -> safeStream(emptyList()));
+                Set<Object> result = flatMapToSet((Collection<Object>) null, e -> empty());
                 assertCollectionIsEmpty(result);
             }
 
             @Test
             @DisplayName("for empty list")
             void forEmptyList() {
-                Set<Object> result = flatMapToSet(new ArrayList<>(), e -> safeStream(emptyList()));
+                Set<Object> result = flatMapToSet(new ArrayList<>(), e -> empty());
                 assertCollectionIsEmpty(result);
             }
 
             @Test
             @DisplayName("for empty set")
             void forEmptySet() {
-                Set<Object> result = flatMapToSet(new HashSet<>(), e -> safeStream(emptyList()));
+                Set<Object> result = flatMapToSet(new HashSet<>(), e -> empty());
                 assertCollectionIsEmpty(result);
             }
         }
@@ -448,13 +448,13 @@ class SetsTest {
         @DisplayName("returns set of flat mapped objects")
         void returnsSetOfFlatMappedObjects(int size) {
             Collection<Organization> collection = getList(size, OrgUtils::getOrganizationWithAddresses);
-            Set<Address> addresses = flatMapToSet(collection, e -> safeStream(e.getAddresses()));
+            Set<Address> addresses = flatMapToSet(collection, e -> e.getAddresses().stream());
             assertEquals(mergeSetsForEachSize(size, OrgUtils::getAddress), addresses);
         }
     }
 
     @Nested
-    @DisplayName("Flat map array to set")
+    @DisplayName("flatMapToSet(T[], Function<T, Stream<R>>)")
     class FlatMapArray {
 
         @Nested
@@ -476,14 +476,14 @@ class SetsTest {
             @Test
             @DisplayName("for nullable array")
             void forNullableArray() {
-                Set<Object> result = flatMapToSet((Object[]) null, e -> safeStream(emptyList()));
+                Set<Object> result = flatMapToSet((Object[]) null, e -> empty());
                 assertCollectionIsEmpty(result);
             }
 
             @Test
             @DisplayName("for empty array")
             void forEmptyArray() {
-                Set<Object> result = flatMapToSet(new Object[]{}, e -> safeStream(emptyList()));
+                Set<Object> result = flatMapToSet(new Object[]{}, e -> empty());
                 assertCollectionIsEmpty(result);
             }
         }
@@ -499,7 +499,7 @@ class SetsTest {
     }
 
     @Nested
-    @DisplayName("Flat map collections to set")
+    @DisplayName("flatMapCollectionsToSet(Collection<T>, Function<T, Collection<R>>)")
     class FlatMapCollections {
 
         @Nested
@@ -551,7 +551,7 @@ class SetsTest {
     }
 
     @Nested
-    @DisplayName("Flat map collections array to set")
+    @DisplayName("flatMapCollectionsToSet(T[], Function<T, Collection<R>>)")
     class FlatMapCollectionsArray {
 
         @Nested
@@ -596,7 +596,7 @@ class SetsTest {
     }
 
     @Nested
-    @DisplayName("Sort collection to set")
+    @DisplayName("sortToSet(Collection<T>, Comparator<T>)")
     class SortCollection {
 
         @Nested
@@ -650,7 +650,7 @@ class SetsTest {
     }
 
     @Nested
-    @DisplayName("Sort array to set")
+    @DisplayName("sortToSet(T[], Comparator<T>)")
     class SortArray {
 
         @Nested

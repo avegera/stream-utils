@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Stream;
 
-import static io.github.avegera.stream.utils.Streams.safeStream;
+import static io.github.avegera.stream.utils.Streams.toStream;
 import static io.github.avegera.stream.utils.test.StreamAssertions.assertEmptyStream;
 import static io.github.avegera.stream.utils.test.StreamAssertions.assertIterableEquals;
 import static io.github.avegera.stream.utils.test.TestUtils.*;
@@ -20,7 +20,7 @@ import static java.util.Arrays.asList;
 class StreamsTest {
 
     @Nested
-    @DisplayName("Safe stream of collection")
+    @DisplayName("toStream(Collection<T>)")
     class SafeStreamOfCollection {
 
         @Nested
@@ -30,14 +30,14 @@ class StreamsTest {
             @Test
             @DisplayName("for nullable collection")
             void forNullableCollection() {
-                Stream<?> stream = safeStream((Collection<Object>) null);
+                Stream<?> stream = toStream((Collection<Object>) null);
                 assertEmptyStream(stream);
             }
 
             @Test
             @DisplayName("for empty collection")
             void forEmptyCollection() {
-                Stream<Object> stream = safeStream(new ArrayList<>());
+                Stream<Object> stream = toStream(new ArrayList<>());
                 assertEmptyStream(stream);
             }
         }
@@ -51,7 +51,7 @@ class StreamsTest {
             @DisplayName("for collection of nulls")
             void forCollectionOfNullsOfSize(int collectionSize) {
                 Collection<Object> collection = getCollectionOfNulls(collectionSize);
-                assertIterableEquals(collection, safeStream(collection));
+                assertIterableEquals(collection, toStream(collection));
             }
 
             @ParameterizedTest(name = "size = {0}")
@@ -59,13 +59,13 @@ class StreamsTest {
             @DisplayName("for collection of objects")
             void forCollectionOfSize(int collectionSize) {
                 Collection<Object> collection = getCollection(collectionSize);
-                assertIterableEquals(collection, safeStream(collection));
+                assertIterableEquals(collection, toStream(collection));
             }
         }
     }
 
     @Nested
-    @DisplayName("Safe stream of varargs")
+    @DisplayName("toStream(T...)")
     class SafeStreamOfVarArgs {
 
         @Nested
@@ -75,14 +75,14 @@ class StreamsTest {
             @Test
             @DisplayName("for nullable array")
             void forNullArray() {
-                Stream<?> stream = safeStream((Object[]) null);
+                Stream<?> stream = toStream((Object[]) null);
                 assertEmptyStream(stream);
             }
 
             @Test
             @DisplayName("for empty array")
             void forEmptyArray() {
-                Stream<Object> stream = safeStream();
+                Stream<Object> stream = toStream();
                 assertEmptyStream(stream);
             }
         }
@@ -96,7 +96,7 @@ class StreamsTest {
             @DisplayName("for array of nulls")
             void forArrayWithNullElementsOfSize(int arraySize) {
                 Object[] array = getArrayOfNulls(arraySize);
-                assertIterableEquals(asList(array), safeStream(array));
+                assertIterableEquals(asList(array), toStream(array));
             }
 
             @ParameterizedTest(name = "size = {0}")
@@ -104,7 +104,7 @@ class StreamsTest {
             @DisplayName("for array of objects")
             void forArrayOfSize(int arraySize) {
                 Object[] array = getArray(arraySize);
-                assertIterableEquals(asList(array), safeStream(array));
+                assertIterableEquals(asList(array), toStream(array));
             }
         }
     }

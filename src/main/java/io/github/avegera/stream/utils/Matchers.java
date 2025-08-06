@@ -3,7 +3,7 @@ package io.github.avegera.stream.utils;
 import java.util.Collection;
 import java.util.function.Predicate;
 
-import static io.github.avegera.stream.utils.Streams.safeStream;
+import static io.github.avegera.stream.utils.Streams.toStream;
 
 /**
  * The class contains laconic method-aliases for safely performing search operations in Java-collections.
@@ -16,32 +16,32 @@ public class Matchers {
     }
 
     public static <T> boolean allMatch(Collection<T> collection, Predicate<T> predicate) {
-        return safeStream(collection)
+        return Streams.toStream(collection)
                 .allMatch(predicate);
     }
 
     public static <T> boolean allMatch(T[] array, Predicate<T> predicate) {
-        return safeStream(array)
+        return toStream(array)
                 .allMatch(predicate);
     }
 
     public static <T> boolean anyMatch(Collection<T> collection, Predicate<T> predicate) {
-        return safeStream(collection)
+        return Streams.toStream(collection)
                 .anyMatch(predicate);
     }
 
     public static <T> boolean anyMatch(T[] array, Predicate<T> predicate) {
-        return safeStream(array)
+        return toStream(array)
                 .anyMatch(predicate);
     }
 
     public static <T> boolean noneMatch(Collection<T> collection, Predicate<T> predicate) {
-        return safeStream(collection)
+        return Streams.toStream(collection)
                 .noneMatch(predicate);
     }
 
     public static <T> boolean noneMatch(T[] array, Predicate<T> predicate) {
-        return safeStream(array)
+        return toStream(array)
                 .noneMatch(predicate);
     }
 }

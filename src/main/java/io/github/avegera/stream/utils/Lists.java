@@ -7,7 +7,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-import static io.github.avegera.stream.utils.Streams.safeStream;
+import static io.github.avegera.stream.utils.Streams.toStream;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -21,83 +21,83 @@ public class Lists {
     }
 
     public static <T> List<T> collect(Collection<T> collection) {
-        return safeStream(collection)
+        return Streams.toStream(collection)
                 .collect(toList());
     }
 
     public static <T> List<T> collect(T[] array) {
-        return safeStream(array)
+        return toStream(array)
                 .collect(toList());
     }
 
     public static <T> List<T> distinct(Collection<T> collection) {
-        return safeStream(collection)
+        return Streams.toStream(collection)
                 .distinct()
                 .collect(toList());
     }
 
     public static <T> List<T> distinct(T[] array) {
-        return safeStream(array)
+        return toStream(array)
                 .distinct()
                 .collect(toList());
     }
 
     public static <T> List<T> filter(Collection<T> collection, Predicate<T> predicate) {
-        return safeStream(collection)
+        return Streams.toStream(collection)
                 .filter(predicate)
                 .collect(toList());
     }
 
     public static <T> List<T> filter(T[] array, Predicate<T> predicate) {
-        return safeStream(array)
+        return toStream(array)
                 .filter(predicate)
                 .collect(toList());
     }
 
     public static <T, R> List<R> flatMap(Collection<T> collection, Function<T, ? extends Stream<R>> flatMapper) {
-        return safeStream(collection)
+        return Streams.toStream(collection)
                 .flatMap(flatMapper)
                 .collect(toList());
     }
 
     public static <T, R> List<R> flatMap(T[] array, Function<T, ? extends Stream<R>> flatMapper) {
-        return safeStream(array)
+        return toStream(array)
                 .flatMap(flatMapper)
                 .collect(toList());
     }
 
     public static <T, R> List<R> flatMapCollections(Collection<T> collection, Function<T, ? extends Collection<R>> flatMapper) {
-        return safeStream(collection)
-                .flatMap(e -> safeStream(flatMapper.apply(e)))
+        return Streams.toStream(collection)
+                .flatMap(e -> Streams.toStream(flatMapper.apply(e)))
                 .collect(toList());
     }
 
     public static <T, R> List<R> flatMapCollections(T[] array, Function<T, ? extends Collection<R>> flatMapper) {
-        return safeStream(array)
-                .flatMap(e -> safeStream(flatMapper.apply(e)))
+        return toStream(array)
+                .flatMap(e -> Streams.toStream(flatMapper.apply(e)))
                 .collect(toList());
     }
 
     public static <T, R> List<R> map(Collection<T> collection, Function<T, R> mapper) {
-        return safeStream(collection)
+        return Streams.toStream(collection)
                 .map(mapper)
                 .collect(toList());
     }
 
     public static <T, R> List<R> map(T[] array, Function<T, R> mapper) {
-        return safeStream(array)
+        return toStream(array)
                 .map(mapper)
                 .collect(toList());
     }
 
     public static <T> List<T> sort(Collection<T> collection, Comparator<T> comparator) {
-        return safeStream(collection)
+        return Streams.toStream(collection)
                 .sorted(comparator)
                 .collect(toList());
     }
 
     public static <T> List<T> sort(T[] array, Comparator<T> comparator) {
-        return safeStream(array)
+        return toStream(array)
                 .sorted(comparator)
                 .collect(toList());
     }

@@ -25,7 +25,7 @@ class StringsTest {
     private static final String TEST_DELIMITER_2 = "|";
 
     @Nested
-    @DisplayName("Join collection to string")
+    @DisplayName("joinToString(Collection<?>, String)")
     class JoinCollection {
 
         @Nested
@@ -142,7 +142,7 @@ class StringsTest {
     }
 
     @Nested
-    @DisplayName("Join array to string")
+    @DisplayName("joinToString(Object[], String)")
     class JoinArray {
 
         @Nested

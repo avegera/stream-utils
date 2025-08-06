@@ -3,7 +3,7 @@ package io.github.avegera.stream.utils;
 import java.util.Collection;
 import java.util.Objects;
 
-import static io.github.avegera.stream.utils.Streams.safeStream;
+import static io.github.avegera.stream.utils.Streams.toStream;
 import static java.util.stream.Collectors.joining;
 
 /**
@@ -17,13 +17,13 @@ public class Strings {
     }
 
     public static String joinToString(Collection<?> collection, String delimiter) {
-        return safeStream(collection)
+        return Streams.toStream(collection)
                 .map(Objects::toString)
                 .collect(joining(delimiter));
     }
 
     public static String joinToString(Object[] array, String delimiter) {
-        return safeStream(array)
+        return toStream(array)
                 .map(Objects::toString)
                 .collect(joining(delimiter));
     }

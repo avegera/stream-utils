@@ -27,7 +27,7 @@ class IteratorsTest {
     private static final String TEST_ZIP_CODE = "testZipCode";
 
     @Nested
-    @DisplayName("For each collection")
+    @DisplayName("forEach(Collection<T>, Consumer<T>)")
     class ForEachCollection {
 
         @Nested
@@ -91,7 +91,7 @@ class IteratorsTest {
     }
 
     @Nested
-    @DisplayName("For each array")
+    @DisplayName("forEach(T[], Consumer<T>)")
     class ForEachArray {
 
         @Nested
@@ -146,7 +146,7 @@ class IteratorsTest {
     }
 
     @Nested
-    @DisplayName("Set for each collection")
+    @DisplayName("setForEach(Collection<T>, BiConsumer<T, R>, Function<T, R>)")
     class SetForEachCollection {
 
         @Nested
@@ -218,7 +218,7 @@ class IteratorsTest {
     }
 
     @Nested
-    @DisplayName("Set for each array")
+    @DisplayName("setForEach(T[], BiConsumer<T, R>, Function<T, R>)")
     class SetForEachArray {
 
         @Nested
@@ -280,7 +280,7 @@ class IteratorsTest {
     }
 
     @Nested
-    @DisplayName("Set value for each collection")
+    @DisplayName("setValueForEach(Collection<T>, BiConsumer<T, R>, R)")
     class SetValueForEachCollection {
 
         @Nested
@@ -344,7 +344,7 @@ class IteratorsTest {
     }
 
     @Nested
-    @DisplayName("Set value for each array")
+    @DisplayName("setValueForEach(T[], BiConsumer<T, R>, R)")
     class SetValueForEachArray {
 
         @Nested

@@ -5,7 +5,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import static io.github.avegera.stream.utils.Streams.safeStream;
+import static io.github.avegera.stream.utils.Streams.toStream;
 
 
 /**
@@ -21,32 +21,32 @@ public class Iterators {
     }
 
     public static <T> void forEach(Collection<T> collection, Consumer<T> consumer) {
-        safeStream(collection)
+        Streams.toStream(collection)
                 .forEach(consumer);
     }
 
     public static <T> void forEach(T[] array, Consumer<T> consumer) {
-        safeStream(array)
+        toStream(array)
                 .forEach(consumer);
     }
 
     public static <T, R> void setForEach(Collection<T> collection, BiConsumer<T, R> setter, Function<T, R> valueExtractor) {
-        safeStream(collection)
+        Streams.toStream(collection)
                 .forEach(item -> setter.accept(item, valueExtractor.apply(item)));
     }
 
     public static <T, R> void setForEach(T[] array, BiConsumer<T, R> setter, Function<T, R> valueExtractor) {
-        safeStream(array)
+        toStream(array)
                 .forEach(item -> setter.accept(item, valueExtractor.apply(item)));
     }
 
     public static <T, R> void setValueForEach(Collection<T> collection, BiConsumer<T, R> setter, R value) {
-        safeStream(collection)
+        Streams.toStream(collection)
                 .forEach(item -> setter.accept(item, value));
     }
 
     public static <T, R> void setValueForEach(T[] array, BiConsumer<T, R> setter, R value) {
-        safeStream(array)
+        toStream(array)
                 .forEach(item -> setter.accept(item, value));
     }
 }

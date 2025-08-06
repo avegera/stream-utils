@@ -14,20 +14,20 @@ import org.junit.jupiter.params.provider.ArgumentsSource;
 import java.util.*;
 
 import static io.github.avegera.stream.utils.Lists.*;
-import static io.github.avegera.stream.utils.Streams.safeStream;
 import static io.github.avegera.stream.utils.test.StreamAssertions.assertCollectionIsEmpty;
 import static io.github.avegera.stream.utils.test.StreamAssertions.assertEqualsIgnoringOrder;
 import static io.github.avegera.stream.utils.test.TestUtils.*;
 import static java.util.Collections.emptyList;
 import static java.util.Comparator.comparingInt;
 import static java.util.function.Function.identity;
+import static java.util.stream.Stream.empty;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ListsTest {
 
     @Nested
-    @DisplayName("Collect collection to list")
+    @DisplayName("collect(Collection<T>)")
     class CollectCollection {
 
         @Nested
@@ -69,7 +69,7 @@ class ListsTest {
     }
 
     @Nested
-    @DisplayName("Collect array to list")
+    @DisplayName("collect(T[])")
     class CollectArray {
 
         @Nested
@@ -103,7 +103,7 @@ class ListsTest {
     }
 
     @Nested
-    @DisplayName("Distinct collection to list")
+    @DisplayName("distinct(Collection<T>)")
     class DistinctCollection {
 
         @Nested
@@ -146,7 +146,7 @@ class ListsTest {
     }
 
     @Nested
-    @DisplayName("Distinct array to list")
+    @DisplayName("distinct(T[])")
     class DistinctArray {
 
         @Nested
@@ -180,7 +180,7 @@ class ListsTest {
     }
 
     @Nested
-    @DisplayName("Filter collection to list")
+    @DisplayName("filter(Collection<T>, Predicate<T>)")
     class FilterCollection {
 
         @Nested
@@ -234,7 +234,7 @@ class ListsTest {
     }
 
     @Nested
-    @DisplayName("Filter array to list")
+    @DisplayName("filter(T[], Predicate<T>)")
     class FilterArray {
 
         @Nested
@@ -280,7 +280,7 @@ class ListsTest {
     }
 
     @Nested
-    @DisplayName("Map collection to list")
+    @DisplayName("map(Collection<T>, Function<T, R>)")
     class MapCollection {
 
         @Nested
@@ -341,7 +341,7 @@ class ListsTest {
     }
 
     @Nested
-    @DisplayName("Map array to list")
+    @DisplayName("map(T[], Function<T, R>)")
     class MapArray {
 
         @Nested
@@ -397,7 +397,7 @@ class ListsTest {
     }
 
     @Nested
-    @DisplayName("Flat map collection to list")
+    @DisplayName("flatMap(Collection<T>, Function<T, Stream<R>>)")
     class FlatMapCollection {
 
         @Nested
@@ -419,21 +419,21 @@ class ListsTest {
             @Test
             @DisplayName("for nullable collection")
             void forNullableCollection() {
-                List<Object> result = flatMap((Collection<Object>) null, e -> safeStream(emptyList()));
+                List<Object> result = flatMap((Collection<Object>) null, e -> empty());
                 assertCollectionIsEmpty(result);
             }
 
             @Test
             @DisplayName("for empty list")
             void forEmptyList() {
-                List<Object> result = flatMap(new ArrayList<>(), e -> safeStream(emptyList()));
+                List<Object> result = flatMap(new ArrayList<>(), e -> empty());
                 assertCollectionIsEmpty(result);
             }
 
             @Test
             @DisplayName("for empty set")
             void forEmptySet() {
-                List<Object> result = flatMap(new HashSet<>(), e -> safeStream(emptyList()));
+                List<Object> result = flatMap(new HashSet<>(), e -> empty());
                 assertCollectionIsEmpty(result);
             }
         }
@@ -443,13 +443,13 @@ class ListsTest {
         @DisplayName("returns list of flat mapped objects")
         void returnsListOfFlatMappedObjects(int size) {
             Collection<Organization> collection = getList(size, OrgUtils::getOrganizationWithAddresses);
-            List<Address> addresses = flatMap(collection, e -> safeStream(e.getAddresses()));
+            List<Address> addresses = flatMap(collection, e -> e.getAddresses().stream());
             assertEquals(mergeListsForEachSize(size, OrgUtils::getAddress), addresses);
         }
     }
 
     @Nested
-    @DisplayName("Flat map array to list")
+    @DisplayName("flatMap(T[], Function<T, Stream<R>>)")
     class FlatMapArray {
 
         @Nested
@@ -471,14 +471,14 @@ class ListsTest {
             @Test
             @DisplayName("for nullable array")
             void forNullableArray() {
-                List<Object> result = flatMap((Object[]) null, e -> safeStream(emptyList()));
+                List<Object> result = flatMap((Object[]) null, e -> empty());
                 assertCollectionIsEmpty(result);
             }
 
             @Test
             @DisplayName("for empty array")
             void forEmptyArray() {
-                List<Object> result = flatMap(new Object[]{}, e -> safeStream(emptyList()));
+                List<Object> result = flatMap(new Object[]{}, e -> empty());
                 assertCollectionIsEmpty(result);
             }
         }
@@ -487,13 +487,13 @@ class ListsTest {
         @DisplayName("returns list of flat mapped objects")
         void returnsListOfFlatMappedObjects() {
             Organization[] array = getList(5, OrgUtils::getOrganizationWithAddresses).toArray(new Organization[0]);
-            List<Address> addresses = flatMap(array, e -> safeStream(e.getAddresses()));
+            List<Address> addresses = flatMap(array, e -> e.getAddresses().stream());
             assertEquals(mergeListsForEachSize(5, OrgUtils::getAddress), addresses);
         }
     }
 
     @Nested
-    @DisplayName("Flat map collections to list")
+    @DisplayName("flatMapCollections(Collection<T>, Function<T, Collection<R>>)")
     class FlatMapCollections {
 
         @Nested
@@ -545,7 +545,7 @@ class ListsTest {
     }
 
     @Nested
-    @DisplayName("Flat map collections array to list")
+    @DisplayName("flatMapCollections(T[], Function<T, Collection<R>>)")
     class FlatMapCollectionsArray {
 
         @Nested
@@ -589,7 +589,7 @@ class ListsTest {
     }
 
     @Nested
-    @DisplayName("Sort collection to list")
+    @DisplayName("sort(Collection<T>, Comparator<T>)")
     class SortCollection {
 
         @Nested
@@ -643,7 +643,7 @@ class ListsTest {
     }
 
     @Nested
-    @DisplayName("Sort array to list")
+    @DisplayName("sort(T[], Comparator<T>)")
     class SortArray {
 
         @Nested

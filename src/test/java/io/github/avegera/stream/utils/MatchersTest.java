@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class MatchersTest {
 
     @Nested
-    @DisplayName("Any match collection")
+    @DisplayName("anyMatch(Collection<T>, Predicate<T>)")
     class AnyMatchCollection {
 
         @Nested
@@ -97,7 +97,7 @@ class MatchersTest {
     }
 
     @Nested
-    @DisplayName("Any match array")
+    @DisplayName("anyMatch(T[], Predicate<T>)")
     class AnyMatchArray {
 
         @Nested
@@ -162,7 +162,7 @@ class MatchersTest {
     }
 
     @Nested
-    @DisplayName("All match collection")
+    @DisplayName("allMatch(Collection<T>, Predicate<T>)")
     class AllMatchCollection {
 
         @Nested
@@ -246,7 +246,7 @@ class MatchersTest {
     }
 
     @Nested
-    @DisplayName("All match array")
+    @DisplayName("allMatch(T[], Predicate<T>)")
     class AllMatchArray {
 
         @Nested
@@ -311,7 +311,7 @@ class MatchersTest {
     }
 
     @Nested
-    @DisplayName("None match collection")
+    @DisplayName("noneMatch(Collection<T>, Predicate<T>)")
     class NoneMatchCollection {
 
         @Nested
@@ -386,7 +386,7 @@ class MatchersTest {
     }
 
     @Nested
-    @DisplayName("None match array")
+    @DisplayName("noneMatch(T[], Predicate<T>)")
     class NoneMatchArray {
 
         @Nested
