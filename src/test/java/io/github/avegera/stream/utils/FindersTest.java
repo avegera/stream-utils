@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class FindersTest {
 
     @Nested
-    @DisplayName("Find first of collection")
+    @DisplayName("findFirst(Collection<T>)")
     class FindFirstOfCollection {
 
         @Nested
@@ -88,7 +88,7 @@ class FindersTest {
     }
 
     @Nested
-    @DisplayName("Find first of varargs")
+    @DisplayName("findFirst(T[])")
     class FindFirstOfVarArgs {
 
         @Nested
@@ -145,7 +145,7 @@ class FindersTest {
     }
 
     @Nested
-    @DisplayName("Find first or default of collection")
+    @DisplayName("findFirstOrNull(Collection<T>)")
     class FindFirstOrDefaultOfCollection {
 
         @Nested
@@ -215,7 +215,7 @@ class FindersTest {
     }
 
     @Nested
-    @DisplayName("Find first or default of array")
+    @DisplayName("findFirstOrNull(T[])")
     class FindFirstOrDefaultOfArray {
 
         @Nested
@@ -266,7 +266,7 @@ class FindersTest {
     }
 
     @Nested
-    @DisplayName("Find first or null of collection")
+    @DisplayName("findFirstOrNull(Collection<T>)")
     class FindFirstOrNullOfCollection {
 
         @Nested
@@ -333,7 +333,7 @@ class FindersTest {
     }
 
     @Nested
-    @DisplayName("Find first or null of varargs")
+    @DisplayName("findFirstOrNull(T[])")
     class FindFirstOrNullOfVarArgs {
 
         @Nested

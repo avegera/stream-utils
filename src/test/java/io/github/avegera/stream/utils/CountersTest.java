@@ -23,8 +23,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class CountersTest {
 
     @Nested
-    @DisplayName("Count of collection")
-    class CountOfCollection {
+    @DisplayName("count(Collection<T>)")
+    class CountCollection {
 
         @Nested
         @DisplayName("returns zero")
@@ -77,8 +77,8 @@ class CountersTest {
     }
 
     @Nested
-    @DisplayName("Count of varargs")
-    class CountOfVarArgs {
+    @DisplayName("count(T[])")
+    class CountArray {
 
         @Nested
         @DisplayName("returns zero")

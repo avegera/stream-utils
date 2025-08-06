@@ -16,12 +16,12 @@ public class Streams {
         //empty private constructor
     }
 
-    public static <T> Stream<T> safeStream(Collection<T> collection) {
+    public static <T> Stream<T> toStream(Collection<T> collection) {
         return collection != null && !collection.isEmpty() ? collection.stream() : empty();
     }
 
     @SafeVarargs
-    public static <T> Stream<T> safeStream(T... array) {
+    public static <T> Stream<T> toStream(T... array) {
         return array != null && array.length > 0 ? Arrays.stream(array) : empty();
     }
 }
