@@ -20,13 +20,28 @@ public class Matchers {
                 .allMatch(predicate);
     }
 
+    public static <T> boolean allMatch(T[] array, Predicate<T> predicate) {
+        return safeStream(array)
+                .allMatch(predicate);
+    }
+
     public static <T> boolean anyMatch(Collection<T> collection, Predicate<T> predicate) {
         return safeStream(collection)
                 .anyMatch(predicate);
     }
 
+    public static <T> boolean anyMatch(T[] array, Predicate<T> predicate) {
+        return safeStream(array)
+                .anyMatch(predicate);
+    }
+
     public static <T> boolean noneMatch(Collection<T> collection, Predicate<T> predicate) {
         return safeStream(collection)
+                .noneMatch(predicate);
+    }
+
+    public static <T> boolean noneMatch(T[] array, Predicate<T> predicate) {
+        return safeStream(array)
                 .noneMatch(predicate);
     }
 }

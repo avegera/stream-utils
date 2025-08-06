@@ -38,6 +38,7 @@ alwaysApply: true
 - **Follow Java Stream API**: Stay close to standard Java Stream API naming
 - **Omit defaults**: Don't include default behaviors in method names
 - **Suffix conventions**: Use appropriate suffixes for different result types
+- **Sort alphabetically** methods names in class when you add new methods
 
 **Naming rules:**
 - For `List<T>` results: No suffix needed (default behavior)
@@ -51,7 +52,6 @@ alwaysApply: true
 - **Safe by default**: All methods safely handle null collections
 - **Empty collection fallback**: Null collections are treated as empty collections
 - **No "safe" prefix**: Methods are safe by default, no need for "safe" in naming
-
 
 ### 5. Immutability (ADR-4)
 - **Mutable by default**: Return mutable collections by default
@@ -148,5 +148,76 @@ This project follows a functional, immutable, and null-safe approach to stream o
 ### AssertJ Usage
 - **Prefer AssertJ over JUnit assertions**: Use AssertJ's fluent API for better readability
 - **Collection assertions**: Use `assertThat(collection).isEmpty()`, `assertThat(collection).hasSize(n)`
+- **Exception testing**: Use `assertThatThrownBy(() -> method()).isInstanceOf(Exception.class)`
+- **Custom assertions**: Use existing `StreamAssertions` for collection-specific assertions
+
+### Nested Test Structure
+- **Use nested classes for test organization**: Group tests by use cases and expected behaviors
+- **Follow hierarchical structure**: Main class → Use case → Specific behavior → Test methods
+- **Consistent naming pattern**: `[Operation]Of[DataType]` for main test classes
+- **Separate exception tests**: Create dedicated nested classes for tests expecting exceptions
+
+**Example structure:**
+```java
+@Nested
+@DisplayName("Find first of collection")
+class FindFirstOfCollection {
+
+    @Nested
+    @DisplayName("returns empty optional object")
+    class ReturnsEmpty {
+
+        @Test
+        @DisplayName("for nullable collection")
+        void forNullableCollection() { ... }
+
+        @Test
+        @DisplayName("for empty list")
+        void forEmptyList() { ... }
+
+        //...
+    }
+
+    @Nested
+    @DisplayName("throws NullPointerException")
+    class ThrowsNullPointerException {
+        // Tests expecting exceptions
+    }
+
+    @Nested
+    @DisplayName("returns first item")
+    class ReturnsFirstItem {
+        // Tests for successful cases
+    }
+}
+```
+
+**Nested class naming conventions:**
+- **Main class**: `[Operation]Of[DataType]` (e.g., `FindFirstOfCollection`, `CountOfVarArgs`)
+- **Behavior classes**: `Returns[ExpectedResult]` (e.g., `ReturnsEmpty`, `ReturnsFirstItem`)
+- **Exception classes**: `Throws[ExceptionType]` (e.g., `ThrowsNullPointerException`)
+- **Test methods**: `for[SpecificCase]` (e.g., `forNullableCollection`, `forCollectionOfObjects`)
+
+**Test method examples:**
+```java
+
+@Test
+@DisplayName("for nullable collection")
+void forNullableCollection() { ... }
+
+@Test
+@DisplayName("for empty list")
+void forEmptyList() { ... }
+
+@ParameterizedTest(name = "size = {0}")
+@ArgumentsSource(CollectionSizeProvider.class)
+@DisplayName("for collection of objects")
+void forCollectionOfObjects(int size) { ... }
+
+@Test
+@DisplayName("for collection with null elements")
+void forCollectionWithNullElements() { ... }
+```
+
 - **Exception testing**: Use `assertThatThrownBy(() -> method()).isInstanceOf(Exception.class)`
 - **Custom assertions**: Use existing `StreamAssertions` for collection-specific assertions

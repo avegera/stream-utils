@@ -25,8 +25,19 @@ public class Lists {
                 .collect(toList());
     }
 
+    public static <T> List<T> collect(T[] array) {
+        return safeStream(array)
+                .collect(toList());
+    }
+
     public static <T> List<T> distinct(Collection<T> collection) {
         return safeStream(collection)
+                .distinct()
+                .collect(toList());
+    }
+
+    public static <T> List<T> distinct(T[] array) {
+        return safeStream(array)
                 .distinct()
                 .collect(toList());
     }
@@ -37,8 +48,20 @@ public class Lists {
                 .collect(toList());
     }
 
+    public static <T> List<T> filter(T[] array, Predicate<T> predicate) {
+        return safeStream(array)
+                .filter(predicate)
+                .collect(toList());
+    }
+
     public static <T, R> List<R> flatMap(Collection<T> collection, Function<T, ? extends Stream<R>> flatMapper) {
         return safeStream(collection)
+                .flatMap(flatMapper)
+                .collect(toList());
+    }
+
+    public static <T, R> List<R> flatMap(T[] array, Function<T, ? extends Stream<R>> flatMapper) {
+        return safeStream(array)
                 .flatMap(flatMapper)
                 .collect(toList());
     }
@@ -49,14 +72,32 @@ public class Lists {
                 .collect(toList());
     }
 
+    public static <T, R> List<R> flatMapCollections(T[] array, Function<T, ? extends Collection<R>> flatMapper) {
+        return safeStream(array)
+                .flatMap(e -> safeStream(flatMapper.apply(e)))
+                .collect(toList());
+    }
+
     public static <T, R> List<R> map(Collection<T> collection, Function<T, R> mapper) {
         return safeStream(collection)
                 .map(mapper)
                 .collect(toList());
     }
 
+    public static <T, R> List<R> map(T[] array, Function<T, R> mapper) {
+        return safeStream(array)
+                .map(mapper)
+                .collect(toList());
+    }
+
     public static <T> List<T> sort(Collection<T> collection, Comparator<T> comparator) {
         return safeStream(collection)
+                .sorted(comparator)
+                .collect(toList());
+    }
+
+    public static <T> List<T> sort(T[] array, Comparator<T> comparator) {
+        return safeStream(array)
                 .sorted(comparator)
                 .collect(toList());
     }

@@ -1,5 +1,6 @@
 package io.github.avegera.stream.utils;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Stream;
 
@@ -17,5 +18,10 @@ public class Streams {
 
     public static <T> Stream<T> safeStream(Collection<T> collection) {
         return collection != null && !collection.isEmpty() ? collection.stream() : empty();
+    }
+
+    @SafeVarargs
+    public static <T> Stream<T> safeStream(T... array) {
+        return array != null && array.length > 0 ? Arrays.stream(array) : empty();
     }
 }

@@ -27,58 +27,58 @@ class IteratorsTest {
     private static final String TEST_ZIP_CODE = "testZipCode";
 
     @Nested
-    @DisplayName("For each method")
-    class ForEach {
+    @DisplayName("For each collection")
+    class ForEachCollection {
 
         @Nested
-        @DisplayName("with consumer argument")
-        class WithConsumer {
+        @DisplayName("throws null pointer exception")
+        class ThrowsNullPointerException {
 
-            @Nested
-            @DisplayName("throws null pointer exception")
-            class ThrowsNullPointerException {
+            @Test
+            @DisplayName("for nullable consumer")
+            void forNullableConsumer() {
+                List<Object> list = new ArrayList<>();
+                assertThrows(NullPointerException.class, () -> forEach(list, null));
+            }
+        }
 
-                @Test
-                @DisplayName("for nullable consumer")
-                void forNullableMapper() {
-                    List<Object> list = new ArrayList<>();
-                    assertThrows(NullPointerException.class, () -> forEach(list, null));
-                }
+        @Nested
+        @DisplayName("do nothing")
+        class DoNothing {
+
+            @Test
+            @DisplayName("for nullable collection")
+            void forNullableCollection() {
+                List<Integer> hashCodes = new ArrayList<>();
+                forEach((List<Object>) null, item -> hashCodes.add(item.hashCode()));
+                assertThat(hashCodes).isEmpty();
             }
 
-            @Nested
-            @DisplayName("do nothing")
-            class DoNothing {
-
-                @Test
-                @DisplayName("for nullable collection")
-                void forNullableCollection() {
-                    List<Integer> hashCodes = new ArrayList<>();
-                    forEach(null, item -> hashCodes.add(item.hashCode()));
-                    assertThat(hashCodes).isEmpty();
-                }
-
-                @Test
-                @DisplayName("for empty list")
-                void forEmptyList() {
-                    List<Integer> hashCodes = new ArrayList<>();
-                    forEach(new ArrayList<>(), item -> hashCodes.add(item.hashCode()));
-                    assertThat(hashCodes).isEmpty();
-                }
-
-                @Test
-                @DisplayName("for empty set")
-                void forEmptySet() {
-                    List<Integer> hashCodes = new ArrayList<>();
-                    forEach(new HashSet<>(), item -> hashCodes.add(item.hashCode()));
-                    assertThat(hashCodes).isEmpty();
-                }
+            @Test
+            @DisplayName("for empty list")
+            void forEmptyList() {
+                List<Integer> hashCodes = new ArrayList<>();
+                forEach(new ArrayList<>(), item -> hashCodes.add(item.hashCode()));
+                assertThat(hashCodes).isEmpty();
             }
+
+            @Test
+            @DisplayName("for empty set")
+            void forEmptySet() {
+                List<Integer> hashCodes = new ArrayList<>();
+                forEach(new HashSet<>(), item -> hashCodes.add(item.hashCode()));
+                assertThat(hashCodes).isEmpty();
+            }
+        }
+
+        @Nested
+        @DisplayName("executes consumer for each element")
+        class ExecutesConsumerForEachElement {
 
             @ParameterizedTest(name = "size = {0}")
             @ArgumentsSource(CollectionSizeProvider.class)
-            @DisplayName("executes provided consumer for each element in collection")
-            void executesConsumersForEachElement(int size) {
+            @DisplayName("for collection of integers")
+            void forCollectionOfIntegers(int size) {
                 List<Integer> list = getIntegers(size);
                 AtomicInteger sum = new AtomicInteger(0);
 
@@ -88,56 +88,250 @@ class IteratorsTest {
                 assertThat(sum.intValue()).isEqualTo(expectedSum);
             }
         }
+    }
+
+    @Nested
+    @DisplayName("For each array")
+    class ForEachArray {
 
         @Nested
-        @DisplayName("with bi-consumer and value arguments")
-        class WithBiConsumerAndValue {
+        @DisplayName("throws null pointer exception")
+        class ThrowsNullPointerException {
 
-            @Nested
-            @DisplayName("throws null pointer exception")
-            class ThrowsNullPointerException {
+            @Test
+            @DisplayName("for nullable consumer")
+            void forNullableConsumer() {
+                Integer[] array = {1, 2, 3};
+                assertThrows(NullPointerException.class, () -> forEach(array, null));
+            }
+        }
 
-                @Test
-                @DisplayName("for nullable bi-consumer")
-                void forNullableBiConsumer() {
-                    List<Integer> list = getIntegers(10);
-                    assertThrows(NullPointerException.class, () -> setValueForEach(list, null, new Object()));
-                }
+        @Nested
+        @DisplayName("do nothing")
+        class DoNothing {
+
+            @Test
+            @DisplayName("for nullable array")
+            void forNullableArray() {
+                List<Integer> hashCodes = new ArrayList<>();
+                forEach((Integer[]) null, item -> hashCodes.add(item.hashCode()));
+                assertThat(hashCodes).isEmpty();
             }
 
-            @Nested
-            @DisplayName("do nothing")
-            class DoNothing {
-
-                @Test
-                @DisplayName("for nullable collection")
-                void forNullableCollection() {
-                    List<Integer> hashCodes = new ArrayList<>();
-                    setValueForEach(null, (item, value) -> hashCodes.add(item.hashCode() + value), 1);
-                    assertThat(hashCodes).isEmpty();
-                }
-
-                @Test
-                @DisplayName("for empty list")
-                void forEmptyList() {
-                    List<Integer> hashCodes = new ArrayList<>();
-                    setValueForEach(new ArrayList<>(), (item, value) -> hashCodes.add(item.hashCode() + value), 1);
-                    assertThat(hashCodes).isEmpty();
-                }
-
-                @Test
-                @DisplayName("for empty set")
-                void forEmptySet() {
-                    List<Integer> hashCodes = new ArrayList<>();
-                    setValueForEach(new HashSet<>(), (item, value) -> hashCodes.add(item.hashCode() + value), 1);
-                    assertThat(hashCodes).isEmpty();
-                }
+            @Test
+            @DisplayName("for empty array")
+            void forEmptyArray() {
+                List<Integer> hashCodes = new ArrayList<>();
+                forEach(new Integer[]{}, item -> hashCodes.add(item.hashCode()));
+                assertThat(hashCodes).isEmpty();
             }
+        }
+
+        @Nested
+        @DisplayName("executes consumer for each element")
+        class ExecutesConsumerForEachElement {
+
+            @Test
+            @DisplayName("for array of integers")
+            void forArrayOfIntegers() {
+                Integer[] array = {1, 2, 3, 4, 5};
+                AtomicInteger sum = new AtomicInteger(0);
+
+                forEach(array, sum::getAndAdd);
+
+                int expectedSum = 15; // 1 + 2 + 3 + 4 + 5
+                assertThat(sum.intValue()).isEqualTo(expectedSum);
+            }
+        }
+    }
+
+    @Nested
+    @DisplayName("Set for each collection")
+    class SetForEachCollection {
+
+        @Nested
+        @DisplayName("throws null pointer exception")
+        class ThrowsNullPointerException {
+
+            @Test
+            @DisplayName("for nullable bi-consumer")
+            void forNullableBiConsumer() {
+                List<Integer> list = getIntegers(10);
+                assertThrows(NullPointerException.class, () -> setForEach(list, null, identity()));
+            }
+
+            @Test
+            @DisplayName("for nullable mapper")
+            void forNullableMapper() {
+                List<Integer> list = getIntegers(10);
+                assertThrows(NullPointerException.class, () -> setForEach(list, (item, value) -> {}, null));
+            }
+        }
+
+        @Nested
+        @DisplayName("do nothing")
+        class DoNothing {
+
+            @Test
+            @DisplayName("for nullable collection")
+            void forNullableCollection() {
+                List<Integer> hashCodes = new ArrayList<>();
+                setForEach((List<Object>) null, (item, value) -> hashCodes.add(value), Object::hashCode);
+                assertThat(hashCodes).isEmpty();
+            }
+
+            @Test
+            @DisplayName("for empty list")
+            void forEmptyList() {
+                List<Integer> hashCodes = new ArrayList<>();
+                setForEach(new ArrayList<>(), (item, value) -> hashCodes.add(value), Object::hashCode);
+                assertThat(hashCodes).isEmpty();
+            }
+
+            @Test
+            @DisplayName("for empty set")
+            void forEmptySet() {
+                List<Integer> hashCodes = new ArrayList<>();
+                Set<Integer> collection = new HashSet<>();
+                setForEach(collection, (item, value) -> hashCodes.add(value), Object::hashCode);
+                assertThat(hashCodes).isEmpty();
+            }
+        }
+
+        @Nested
+        @DisplayName("executes bi-consumer with mapper result for each element")
+        class ExecutesBiConsumerWithMapperResultForEachElement {
 
             @ParameterizedTest(name = "size = {0}")
             @ArgumentsSource(CollectionSizeProvider.class)
-            @DisplayName("executes provided bi-consumerfor each element in collection")
-            void executesConsumersForEachElement(int size) {
+            @DisplayName("for collection of users")
+            void forCollectionOfUsers(int size) {
+                List<User> users = getUsers(size);
+
+                setForEach(users, User::setZipCode, user -> TEST_ZIP_CODE + user.getId());
+
+                for (User user : users) {
+                    assertThat(user.getZipCode()).isEqualTo(TEST_ZIP_CODE + user.getId());
+                }
+            }
+        }
+    }
+
+    @Nested
+    @DisplayName("Set for each array")
+    class SetForEachArray {
+
+        @Nested
+        @DisplayName("throws null pointer exception")
+        class ThrowsNullPointerException {
+
+            @Test
+            @DisplayName("for nullable bi-consumer")
+            void forNullableBiConsumer() {
+                Integer[] array = {1, 2, 3};
+                assertThrows(NullPointerException.class, () -> setForEach(array, null, identity()));
+            }
+
+            @Test
+            @DisplayName("for nullable mapper")
+            void forNullableMapper() {
+                Integer[] array = {1, 2, 3};
+                assertThrows(NullPointerException.class, () -> setForEach(array, (item, value) -> {}, null));
+            }
+        }
+
+        @Nested
+        @DisplayName("do nothing")
+        class DoNothing {
+
+            @Test
+            @DisplayName("for nullable array")
+            void forNullableArray() {
+                List<Integer> hashCodes = new ArrayList<>();
+                setForEach((Integer[]) null, (item, value) -> hashCodes.add(value), Object::hashCode);
+                assertThat(hashCodes).isEmpty();
+            }
+
+            @Test
+            @DisplayName("for empty array")
+            void forEmptyArray() {
+                List<Integer> hashCodes = new ArrayList<>();
+                setForEach(new Integer[]{}, (item, value) -> hashCodes.add(value), Object::hashCode);
+                assertThat(hashCodes).isEmpty();
+            }
+        }
+
+        @Nested
+        @DisplayName("executes bi-consumer with mapper result for each element")
+        class ExecutesBiConsumerWithMapperResultForEachElement {
+
+            @Test
+            @DisplayName("for array of users")
+            void forArrayOfUsers() {
+                User[] users = getUsers(5).toArray(new User[0]);
+
+                setForEach(users, User::setZipCode, user -> TEST_ZIP_CODE + user.getId());
+
+                for (User user : users) {
+                    assertThat(user.getZipCode()).isEqualTo(TEST_ZIP_CODE + user.getId());
+                }
+            }
+        }
+    }
+
+    @Nested
+    @DisplayName("Set value for each collection")
+    class SetValueForEachCollection {
+
+        @Nested
+        @DisplayName("throws null pointer exception")
+        class ThrowsNullPointerException {
+
+            @Test
+            @DisplayName("for nullable bi-consumer")
+            void forNullableBiConsumer() {
+                List<Integer> list = getIntegers(10);
+                assertThrows(NullPointerException.class, () -> setValueForEach(list, null, new Object()));
+            }
+        }
+
+        @Nested
+        @DisplayName("do nothing")
+        class DoNothing {
+
+            @Test
+            @DisplayName("for nullable collection")
+            void forNullableCollection() {
+                List<Integer> hashCodes = new ArrayList<>();
+                setValueForEach((List<Object>) null, (item, value) -> hashCodes.add(item.hashCode() + value), 1);
+                assertThat(hashCodes).isEmpty();
+            }
+
+            @Test
+            @DisplayName("for empty list")
+            void forEmptyList() {
+                List<Integer> hashCodes = new ArrayList<>();
+                setValueForEach(new ArrayList<>(), (item, value) -> hashCodes.add(item.hashCode() + value), 1);
+                assertThat(hashCodes).isEmpty();
+            }
+
+            @Test
+            @DisplayName("for empty set")
+            void forEmptySet() {
+                List<Integer> hashCodes = new ArrayList<>();
+                setValueForEach(new HashSet<>(), (item, value) -> hashCodes.add(item.hashCode() + value), 1);
+                assertThat(hashCodes).isEmpty();
+            }
+        }
+
+        @Nested
+        @DisplayName("executes bi-consumer with value for each element")
+        class ExecutesBiConsumerWithValueForEachElement {
+
+            @ParameterizedTest(name = "size = {0}")
+            @ArgumentsSource(CollectionSizeProvider.class)
+            @DisplayName("for collection of users")
+            void forCollectionOfUsers(int size) {
                 List<User> users = getUsers(size);
 
                 setValueForEach(users, User::setZipCode, TEST_ZIP_CODE);
@@ -147,71 +341,58 @@ class IteratorsTest {
                 }
             }
         }
+    }
+
+    @Nested
+    @DisplayName("Set value for each array")
+    class SetValueForEachArray {
 
         @Nested
-        @DisplayName("with bi-consumer and mapper arguments")
-        class WithBiConsumerAndMapper {
+        @DisplayName("throws null pointer exception")
+        class ThrowsNullPointerException {
 
-            @Nested
-            @DisplayName("throws null pointer exception")
-            class ThrowsNullPointerException {
+            @Test
+            @DisplayName("for nullable bi-consumer")
+            void forNullableBiConsumer() {
+                Integer[] array = {1, 2, 3};
+                assertThrows(NullPointerException.class, () -> setValueForEach(array, null, new Object()));
+            }
+        }
 
-                @Test
-                @DisplayName("for nullable bi-consumer")
-                void forNullableBiConsumer() {
-                    List<Integer> list = getIntegers(10);
-                    assertThrows(NullPointerException.class, () -> setForEach(list, null, identity()));
-                }
+        @Nested
+        @DisplayName("do nothing")
+        class DoNothing {
 
-                @Test
-                @DisplayName("for nullable mapper")
-                void forNullableMapper() {
-                    List<Integer> list = getIntegers(10);
-                    assertThrows(NullPointerException.class, () -> setForEach(list, (item, value) -> {
-                    }, null));
-                }
+            @Test
+            @DisplayName("for nullable array")
+            void forNullableArray() {
+                List<Integer> hashCodes = new ArrayList<>();
+                setValueForEach((Integer[]) null, (item, value) -> hashCodes.add(item.hashCode() + value), 1);
+                assertThat(hashCodes).isEmpty();
             }
 
-            @Nested
-            @DisplayName("do nothing")
-            class DoNothing {
-
-                @Test
-                @DisplayName("for nullable collection")
-                void forNullableCollection() {
-                    List<Integer> hashCodes = new ArrayList<>();
-                    setForEach(null, (item, value) -> hashCodes.add(value), Object::hashCode);
-                    assertThat(hashCodes).isEmpty();
-                }
-
-                @Test
-                @DisplayName("for empty list")
-                void forEmptyList() {
-                    List<Integer> hashCodes = new ArrayList<>();
-                    setForEach(new ArrayList<>(), (item, value) -> hashCodes.add(value), Object::hashCode);
-                    assertThat(hashCodes).isEmpty();
-                }
-
-                @Test
-                @DisplayName("for empty set")
-                void forEmptySet() {
-                    List<Integer> hashCodes = new ArrayList<>();
-                    Set<Integer> collection = new HashSet<>();
-                    setForEach(collection, (item, value) -> hashCodes.add(value), Object::hashCode);
-                    assertThat(hashCodes).isEmpty();
-                }
+            @Test
+            @DisplayName("for empty array")
+            void forEmptyArray() {
+                List<Integer> hashCodes = new ArrayList<>();
+                setValueForEach(new Integer[]{}, (item, value) -> hashCodes.add(item.hashCode() + value), 1);
+                assertThat(hashCodes).isEmpty();
             }
+        }
 
-            @ParameterizedTest(name = "size = {0}")
-            @ArgumentsSource(CollectionSizeProvider.class)
-            @DisplayName("executes provided bi-consumer with mapper result for each element in collection")
-            void executesConsumersForEachElement(int size) {
-                List<User> users = getUsers(size);
+        @Nested
+        @DisplayName("executes bi-consumer with value for each element")
+        class ExecutesBiConsumerWithValueForEachElement {
 
-                setForEach(users, User::setZipCode, user -> TEST_ZIP_CODE + user.getId());
+            @Test
+            @DisplayName("for array of users")
+            void forArrayOfUsers() {
+                User[] users = getUsers(5).toArray(new User[0]);
+
+                setValueForEach(users, User::setZipCode, TEST_ZIP_CODE);
 
                 for (User user : users) {
-                    assertThat(user.getZipCode()).isEqualTo(TEST_ZIP_CODE + user.getId());
+                    assertThat(user.getZipCode()).isEqualTo(TEST_ZIP_CODE);
                 }
             }
         }
