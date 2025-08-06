@@ -86,6 +86,30 @@ public class TestUtils {
                 .collect(toSet());
     }
 
+    public static Object[] getArray(int size) {
+        assertTrue(size > 0, SIZE_SHOULD_BE_POSITIVE_INTEGER_NUMBER);
+        return IntStream.range(1, size + 1)
+                .boxed()
+                .map((i) -> new Object())
+                .toArray();
+    }
+
+    public static Object[] getArrayOfNulls(int size) {
+        assertTrue(size > 0, SIZE_SHOULD_BE_POSITIVE_INTEGER_NUMBER);
+        Object[] array = new Object[size];
+        java.util.Arrays.fill(array, null);
+        return array;
+    }
+
+    public static Collection<Object> getCollectionOfNulls(int size) {
+        assertTrue(size > 0, SIZE_SHOULD_BE_POSITIVE_INTEGER_NUMBER);
+        List<Object> collection = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            collection.add(null);
+        }
+        return collection;
+    }
+
     public static Collection<Object> getCollection(int size) {
         assertTrue(size > 0, SIZE_SHOULD_BE_POSITIVE_INTEGER_NUMBER);
         return IntStream.range(1, size + 1)

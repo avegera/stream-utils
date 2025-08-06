@@ -25,8 +25,18 @@ public class Iterators {
                 .forEach(consumer);
     }
 
+    public static <T> void forEach(T[] array, Consumer<T> consumer) {
+        safeStream(array)
+                .forEach(consumer);
+    }
+
     public static <T, R> void setForEach(Collection<T> collection, BiConsumer<T, R> setter, Function<T, R> valueExtractor) {
         safeStream(collection)
+                .forEach(item -> setter.accept(item, valueExtractor.apply(item)));
+    }
+
+    public static <T, R> void setForEach(T[] array, BiConsumer<T, R> setter, Function<T, R> valueExtractor) {
+        safeStream(array)
                 .forEach(item -> setter.accept(item, valueExtractor.apply(item)));
     }
 
@@ -35,5 +45,8 @@ public class Iterators {
                 .forEach(item -> setter.accept(item, value));
     }
 
-    //TODO: ADR whe different naming
+    public static <T, R> void setValueForEach(T[] array, BiConsumer<T, R> setter, R value) {
+        safeStream(array)
+                .forEach(item -> setter.accept(item, value));
+    }
 }

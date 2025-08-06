@@ -1,7 +1,6 @@
 package io.github.avegera.stream.utils;
 
 import io.github.avegera.stream.utils.test.CollectionSizeProvider;
-import io.github.avegera.stream.utils.test.StreamAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -14,22 +13,24 @@ import java.util.stream.Stream;
 
 import static io.github.avegera.stream.utils.Streams.safeStream;
 import static io.github.avegera.stream.utils.test.StreamAssertions.assertEmptyStream;
-import static io.github.avegera.stream.utils.test.TestUtils.getCollection;
+import static io.github.avegera.stream.utils.test.StreamAssertions.assertIterableEquals;
+import static io.github.avegera.stream.utils.test.TestUtils.*;
+import static java.util.Arrays.asList;
 
 class StreamsTest {
 
     @Nested
-    @DisplayName("Safe stream")
-    class SafeStream {
+    @DisplayName("Safe stream of collection")
+    class SafeStreamOfCollection {
 
         @Nested
-        @DisplayName("is empty")
-        class IsEmpty {
+        @DisplayName("returns empty stream")
+        class ReturnsEmptyStream {
 
             @Test
             @DisplayName("for nullable collection")
             void forNullableCollection() {
-                Stream<?> stream = safeStream(null);
+                Stream<?> stream = safeStream((Collection<Object>) null);
                 assertEmptyStream(stream);
             }
 
@@ -41,12 +42,70 @@ class StreamsTest {
             }
         }
 
-        @ParameterizedTest(name = "size = {0}")
-        @ArgumentsSource(CollectionSizeProvider.class)
-        @DisplayName("equals collection of fixed size")
-        void equalsCollectionOfFixedSize(int collectionSize) {
-            Collection<Object> collection = getCollection(collectionSize);
-            StreamAssertions.assertIterableEquals(collection, safeStream(collection));
+        @Nested
+        @DisplayName("returns stream with same elements")
+        class ReturnsStreamWithSameElements {
+
+            @ParameterizedTest(name = "size = {0}")
+            @ArgumentsSource(CollectionSizeProvider.class)
+            @DisplayName("for collection of nulls")
+            void forCollectionOfNullsOfSize(int collectionSize) {
+                Collection<Object> collection = getCollectionOfNulls(collectionSize);
+                assertIterableEquals(collection, safeStream(collection));
+            }
+
+            @ParameterizedTest(name = "size = {0}")
+            @ArgumentsSource(CollectionSizeProvider.class)
+            @DisplayName("for collection of objects")
+            void forCollectionOfSize(int collectionSize) {
+                Collection<Object> collection = getCollection(collectionSize);
+                assertIterableEquals(collection, safeStream(collection));
+            }
+        }
+    }
+
+    @Nested
+    @DisplayName("Safe stream of varargs")
+    class SafeStreamOfVarArgs {
+
+        @Nested
+        @DisplayName("returns empty stream")
+        class ReturnsEmptyStream {
+
+            @Test
+            @DisplayName("for nullable array")
+            void forNullArray() {
+                Stream<?> stream = safeStream((Object[]) null);
+                assertEmptyStream(stream);
+            }
+
+            @Test
+            @DisplayName("for empty array")
+            void forEmptyArray() {
+                Stream<Object> stream = safeStream();
+                assertEmptyStream(stream);
+            }
+        }
+
+        @Nested
+        @DisplayName("returns stream with same elements")
+        class ReturnsStreamWithSameElements {
+
+            @ParameterizedTest(name = "size = {0}")
+            @ArgumentsSource(CollectionSizeProvider.class)
+            @DisplayName("for array of nulls")
+            void forArrayWithNullElementsOfSize(int arraySize) {
+                Object[] array = getArrayOfNulls(arraySize);
+                assertIterableEquals(asList(array), safeStream(array));
+            }
+
+            @ParameterizedTest(name = "size = {0}")
+            @ArgumentsSource(CollectionSizeProvider.class)
+            @DisplayName("for array of objects")
+            void forArrayOfSize(int arraySize) {
+                Object[] array = getArray(arraySize);
+                assertIterableEquals(asList(array), safeStream(array));
+            }
         }
     }
 }

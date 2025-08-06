@@ -27,8 +27,19 @@ public class Sets {
                 .collect(toSet());
     }
 
+    public static <T> Set<T> collectToSet(T[] array) {
+        return safeStream(array)
+                .collect(toSet());
+    }
+
     public static <T> Set<T> distinctToSet(Collection<T> collection) {
         return safeStream(collection)
+                .distinct()
+                .collect(toSet());
+    }
+
+    public static <T> Set<T> distinctToSet(T[] array) {
+        return safeStream(array)
                 .distinct()
                 .collect(toSet());
     }
@@ -39,8 +50,20 @@ public class Sets {
                 .collect(toSet());
     }
 
+    public static <T> Set<T> filterToSet(T[] array, Predicate<T> predicate) {
+        return safeStream(array)
+                .filter(predicate)
+                .collect(toSet());
+    }
+
     public static <T, R> Set<R> flatMapToSet(Collection<T> collection, Function<T, ? extends Stream<R>> flatMapper) {
         return safeStream(collection)
+                .flatMap(flatMapper)
+                .collect(toSet());
+    }
+
+    public static <T, R> Set<R> flatMapToSet(T[] array, Function<T, ? extends Stream<R>> flatMapper) {
+        return safeStream(array)
                 .flatMap(flatMapper)
                 .collect(toSet());
     }
@@ -51,14 +74,32 @@ public class Sets {
                 .collect(toSet());
     }
 
+    public static <T, R> Set<R> flatMapCollectionsToSet(T[] array, Function<T, ? extends Collection<R>> flatMapper) {
+        return safeStream(array)
+                .flatMap(e -> safeStream(flatMapper.apply(e)))
+                .collect(toSet());
+    }
+
     public static <T, R> Set<R> mapToSet(Collection<T> collection, Function<T, R> mapper) {
         return safeStream(collection)
                 .map(mapper)
                 .collect(toSet());
     }
 
+    public static <T, R> Set<R> mapToSet(T[] array, Function<T, R> mapper) {
+        return safeStream(array)
+                .map(mapper)
+                .collect(toSet());
+    }
+
     public static <T> Set<T> sortToSet(Collection<T> collection, Comparator<T> comparator) {
         return safeStream(collection)
+                .sorted(comparator)
+                .collect(toCollection(LinkedHashSet::new));
+    }
+
+    public static <T> Set<T> sortToSet(T[] array, Comparator<T> comparator) {
+        return safeStream(array)
                 .sorted(comparator)
                 .collect(toCollection(LinkedHashSet::new));
     }

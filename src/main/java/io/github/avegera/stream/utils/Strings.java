@@ -21,4 +21,10 @@ public class Strings {
                 .map(Objects::toString)
                 .collect(joining(delimiter));
     }
+
+    public static String joinToString(Object[] array, String delimiter) {
+        return safeStream(array)
+                .map(Objects::toString)
+                .collect(joining(delimiter));
+    }
 }

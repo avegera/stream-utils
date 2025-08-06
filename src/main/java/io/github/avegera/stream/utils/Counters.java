@@ -1,6 +1,7 @@
 package io.github.avegera.stream.utils;
 
 import java.util.Collection;
+import java.util.function.Predicate;
 
 import static io.github.avegera.stream.utils.Streams.safeStream;
 
@@ -16,6 +17,24 @@ public class Counters {
 
     public static <T> long count(Collection<T> collection) {
         return safeStream(collection)
+                .count();
+    }
+
+    @SafeVarargs
+    public static <T> long count(T... array) {
+        return safeStream(array)
+                .count();
+    }
+
+    public static <T> long count(Collection<T> collection, Predicate<T> predicate) {
+        return safeStream(collection)
+                .filter(predicate)
+                .count();
+    }
+
+    public static <T> long count(T[] array, Predicate<T> predicate) {
+        return safeStream(array)
+                .filter(predicate)
                 .count();
     }
 }
